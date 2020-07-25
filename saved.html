@@ -11,7 +11,7 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
 
-    <title>Find Books - Bookshelf</title>
+    <title>Saved Books - Bookshelf</title>
 </head>
 
 <body>
@@ -19,27 +19,13 @@
     <div class="container" id="top">
 
         <div class="row justify-content-center">
-            <div class="display-4 my-2">Book Searcher</div>
+            <div class="display-4 my-2">Your Saved Books</div>
         </div>
         <div class="row justify-content-center mb-4">
-            <a href="./saved.html">Saved Books</a>
+            <a href="./index.html">Find Books</a>
         </div>
 
-        <div class="form  form-group ">
-            <div class="row justify-content-center">
-                <div class="col-5">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="query" placeholder="Search for authors and books" aria-label="Book search field">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="search-book">Book</button>
-                            <button class="btn btn-outline-secondary" type="button" id="search-author">Author</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row justify-content-center" id="item-count"></div>
-        </div>
+        <div class="row justify-content-center" id="item-count">27 Books</div>
 
         <div class="row">
             <div class="row found-items">
@@ -65,7 +51,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="./lodash-min.js"></script>
-    <script src="./app.js"></script>
+    <script src="./saved.js"></script>
 </body>
 
 </html>

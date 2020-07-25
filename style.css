@@ -5,3 +5,14 @@ img{
 /* #pageButtons{
     display: none;
 } */
+
+.save-book{
+    transition-property: all;
+    transition-duration: 500ms;
+}
+
+.saved{
+    border: 1px #1db100 solid;
+    background-color: rgba(0,0,0,0);
+    color: black;
+}
