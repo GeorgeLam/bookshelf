@@ -118,8 +118,12 @@ async function searcher(query, startIndex, type){
             "title": data.items[e.target.id].volumeInfo.title,
             "author": data.items[e.target.id].volumeInfo.authors,
             "date": data.items[e.target.id].volumeInfo.publishedDate,
-            "image": data.items[e.target.id].volumeInfo.imageLinks.smallThumbnail
+            "image": data.items[e.target.id].volumeInfo.imageLinks.smallThumbnail,
+            "id": data.items[e.target.id].id,
+            "learnLink": `https://books.google.com/books?id=${data.items[e.target.id].id}`
         };
+
+        
 
         savedBooks.forEach(book => {
         if(_.isEqual(book, newBook)){
@@ -139,7 +143,10 @@ async function searcher(query, startIndex, type){
             $(`#${e.target.id}`).tooltip({ "title": "Already saved!" })
         })
 
-        $(`#${e.target.id}`).addClass("saved");
+        
+        $(`#${e.target.id}`).removeClass("btn-primary");
+        $(`#${e.target.id}`).addClass("btn-success");
+        $(`#${e.target.id}`).text("Saved");
 
 
         if (!duplicate){savedBooks.push(newBook)};
