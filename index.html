@@ -16,108 +16,36 @@
 
 <body>
 
-    <div class="container">
+    <div class="container" id="top">
 
         <div class="row justify-content-center">
             <div class="display-4 my-4">Book Searcher</div>
         </div>
-        <div class="row form-group justify-content-center">
-            <div class="col-4">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="query" placeholder="Search for authors and books" aria-label="Book search field">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="search">Go</button>
+        <div class="form  form-group ">
+            <div class="row justify-content-center">
+                <div class="col-5">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="query" placeholder="Search for authors and books" aria-label="Book search field">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="search-book">Book</button>
+                            <button class="btn btn-outline-secondary" type="button" id="search-author">Author</button>
+                        </div>
                     </div>
+
                 </div>
             </div>
+            <div class="row justify-content-center" id="item-count"></div>
         </div>
 
         <div class="row">
             <div class="row found-items">
-                
-                <!-- <div class="col col-12 col-lg-6 py-2">
-                    <div class="card">
-                        <div class="row card-body">
-                            <div class="col-sm-9">
-                                <h5 class="card-title">The Great Gatsby</h5>
-                                <p class="card-text">Fitzgerald</p>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus sunt ea magni nobis, alias facere ipsa commodi, voluptatibus eaque, non unde ex et mollitia. Obcaecati laboriosam in rem voluptate.</p>
-                                <a href="#" class="btn btn-sm btn-primary">Learn More</a>
-                                <a href="#" class="btn btn-sm btn-primary">Save</a>
-                            </div>
-                            <img class="col-sm-3" src="Images/template.png" alt="sans" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col col-12 col-lg-6 py-2">
-                    <div class="card">
-                        <div class="row card-body">
-                            <div class="col-sm-9">
-                                <h5 class="card-title">The Great Gatsby</h5>
-                                <p class="card-text">Fitzgerald</p>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus sunt ea magni
-                                    nobis, alias facere ipsa commodi, voluptatibus eaque, non unde ex et mollitia. Obcaecati laboriosam
-                                    in rem voluptate.</p>
-                                <a href="#" class="btn btn-sm btn-primary">Learn More</a>
-                                <a href="#" class="btn btn-sm btn-primary">Save</a>
-                            </div>
-                            <img class="col-sm-3" src="Images/template.png" alt="sans" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col col-12 col-lg-6 py-2">
-                    <div class="card">
-                        <div class="row card-body">
-                            <div class="col-sm-9">
-                                <h5 class="card-title">The Great Gatsby</h5>
-                                <p class="card-text">Fitzgerald</p>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus sunt ea magni
-                                    nobis, alias facere ipsa commodi, voluptatibus eaque, non unde ex et mollitia. Obcaecati laboriosam
-                                    in rem voluptate.</p>
-                                <a href="#" class="btn btn-sm btn-primary">Learn More</a>
-                                <a href="#" class="btn btn-sm btn-primary">Save</a>
-                            </div>
-                            <img class="col-sm-3" src="Images/template.png" alt="sans" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col col-12 col-lg-6 py-2">
-                    <div class="card">
-                        <div class="row card-body">
-                            <div class="col-sm-9">
-                                <h5 class="card-title">The Great Gatsby</h5>
-                                <p class="card-text">Fitzgerald</p>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus sunt ea magni
-                                    nobis, alias facere ipsa commodi, voluptatibus eaque, non unde ex et mollitia. Obcaecati laboriosam
-                                    in rem voluptate.</p>
-                                <a href="#" class="btn btn-sm btn-primary">Learn More</a>
-                                <a href="#" class="btn btn-sm btn-primary">Save</a>
-                            </div>
-                            <img class="col-sm-3" src="Images/template.png" alt="sans" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col col-12 col-lg-6 py-2">
-                    <div class="card">
-                        <div class="row card-body">
-                            <div class="col-sm-9">
-                                <h5 class="card-title">The Great Gatsby</h5>
-                                <p class="card-text">Fitzgerald</p>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus sunt ea magni nobis, alias facere ipsa commodi, voluptatibus eaque, non unde ex et mollitia. Obcaecati laboriosam in rem voluptate.</p>
-                                <a href="#" class="btn btn-sm btn-primary">Learn More</a>
-                                <a href="#" class="btn btn-sm btn-primary">Save</a>
-                            </div>
-                            <img class="col-sm-3" src="Images/template.png" alt="sans" />
-                        </div>
-                    </div>
-                </div> -->
-                
+                <!-- Book card divs are inserted here by Javascript -->
             </div>
-          
+        </div>
+
+        <div class="row justify-content-center my-3" id="pageButtons">
+            <button class="btn btn-outline-secondary mx-1" type="button" id="previous" href="#top">Previous</button>
+            <button class="btn btn-outline-secondary mx-1" type="button" id="next" href="#top">Next</button>
         </div>
 
 
@@ -125,9 +53,7 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
