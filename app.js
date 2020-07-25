@@ -1,10 +1,8 @@
 let foundItems = document.querySelector(".found-items");
 let index = 0;
 let type;
-let savedBooks = JSON.parse(localStorage.getItem('books'));
+let savedBooks = JSON.parse(localStorage.getItem('books')) || [];
 console.log(savedBooks);
-let bookSet = new Set(savedBooks);
-console.log(bookSet)
 
 $(function () {
     $(document).on('shown.bs.tooltip', function (e) {
@@ -146,15 +144,8 @@ async function searcher(query, startIndex, type){
 
         if (!duplicate){savedBooks.push(newBook)};
 
-        // bookSet.add({
-        //     "title": data.items[e.target.id].volumeInfo.title,
-        //     "author": data.items[e.target.id].volumeInfo.authors,
-        //     "date": data.items[e.target.id].volumeInfo.publishedDate,
-        //     "image": data.items[e.target.id].volumeInfo.imageLinks.smallThumbnail
-        // });
         localStorage.setItem('books', JSON.stringify(savedBooks));
         console.log(savedBooks);
-        console.log(bookSet);
     });
 
 }
