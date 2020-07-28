@@ -132,15 +132,11 @@ async function searcher(query, startIndex, type){
         });
 
         $(function () {                             //Showing tooltips on 'save' click
-            //console.log($(`#${e.target.id}`).tooltip())
             if (duplicate){
                 console.log(duplicate);
-                $(`#${e.target.id}`).tooltip({ "title": "Already saved!" })
-            } else{
-                $(`#${e.target.id}`).tooltip({ "title": "Saved mate!" })
-            }
-            $(`#${e.target.id}`).tooltip('show')
-            $(`#${e.target.id}`).tooltip({ "title": "Already saved!" })
+                $(`#${e.target.id}`).tooltip({ "title": "Already saved!" });
+                $(`#${e.target.id}`).tooltip('show');
+            } 
         })
 
         

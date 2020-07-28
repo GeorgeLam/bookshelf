@@ -17,6 +17,9 @@ linkActivation = () => {
 loadList = () => {
     foundItems.innerHTML = "";
     document.querySelector("#item-count").innerText = `You've saved ${saved.length} books.`
+    
+    $("#previous").hide(); $("#next").hide();
+
 
     saved.forEach(book => {
         newBook = document.createElement("DIV")
