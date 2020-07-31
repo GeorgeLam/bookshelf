@@ -153,5 +153,93 @@ async function searcher(query, startIndex, type){
 
 }
 
+function handleSignUp() {
+    var email = document.getElementById('sign-up-email').value;
+    var password = document.getElementById('sign-up-pw').value;
+    var confPassword = document.getElementById('sign-up-pw-conf').value;
+    if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+    }
+    if (password.length < 4) {
+        alert('Please enter a password with a length of at least four characters.');
+        return;
+    }
+    if (password != confPassword) {
+        alert('Passwords do not match!');
+        return;
+    }
+    console.log(password)
+    console.log(confPassword)
+    // Create user with email and pass.
+    // [START createwithemail]
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode == 'auth/weak-password') {
+            alert('The password is too weak.');
+        } else {
+            alert(errorMessage);
+        }
+        console.log(error);
+        // [END_EXCLUDE]
+    });
+    // [END createwithemail]
+}
+
+function handleSignIn(){
+    var email = document.getElementById('sign-in-email').value;
+    var password = document.getElementById('sign-in-pw').value;
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+        } else {
+            alert(errorMessage);
+        }
+        console.log(error);
+        document.getElementById('quickstart-sign-in').disabled = false;
+        // [END_EXCLUDE]
+    });
+    //console.log("logged in!")
+    //authCheck();
+}
+
+// $(".nav-link").click(() => {
+//     console.log("hi")
+// });
+
+document.querySelector("#account-action-btn").addEventListener("click", handleSignUp);
+document.querySelector("#sign-in-btn").addEventListener("click", handleSignIn);
+
+authCheck = () => {
+    firebase.auth().onAuthStateChanged(function (user) {
+        console.log(user);
+        if (user) {
+            // User is signed in.
+            $("#acc-status").text(`You're logged in as ${user.email}`);
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            // ...
+        } else {
+            // User is signed out.
+            // ...
+        }
+    });
+};
+
+window.onload = function () {
+    authCheck();
+};
 
 //<p class="card-text">${book.volumeInfo.title} was published in ${book.volumeInfo.publishedDate} by ${book.volumeInfo.publisher}. The book, written by ${book.volumeInfo.authors}, has ${book.volumeInfo.pageCount} pages. It is considered to be a ${book.volumeInfo.categories} book.</p>

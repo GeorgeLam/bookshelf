@@ -15,9 +15,17 @@
 </head>
 
 <body>
+    <div class="row bg-light account d-flex flex-row justify-content-center">
+        <div class="">
+            <!-- Button trigger modal -->
+            <a href="#" data-toggle="modal" data-target="#exampleModal">
+                My Account
+            </a>
+            <span id="acc-status"></span>
+        </div>
+    </div>
 
     <div class="container" id="top">
-
         <div class="row justify-content-center">
             <div class="display-4 my-2">Book Searcher</div>
         </div>
@@ -55,6 +63,68 @@
 
     </div> <!-- end of container -->
 
+
+    <!-- account sign-in/sign-up modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item w-50">
+                            <a class="nav-link active text-center" id="sign-in" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                                aria-selected="true">Sign in</a>
+                        </li>
+                        <li class="nav-item w-50">
+                            <a class="nav-link text-center" id="sign-up" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                                aria-selected="false">Sign up</a>
+                        </li>
+                    </ul>
+                    
+                <div class="modal-body">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="sign-in-form">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="sign-in-email" aria-describedby="emailHelp"
+                                        placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="sign-in-pw" placeholder="Password">
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="sign-in-btn">Sign in</button>
+
+                            </form>                        
+                        </div>
+
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="sign-up-form">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="sign-up-email" aria-describedby="emailHelp"
+                                        placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="sign-up-pw" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Confirm Password</label>
+                                    <input type="password" class="form-control" id="sign-up-pw-conf" placeholder="Confirm Password">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="account-action-btn">Sign up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -65,6 +135,32 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="./lodash-min.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBgoIS28QpA9CQYcQVh2U19HUqBK1qvKHI",
+            authDomain: "bookshelf-284401.firebaseapp.com",
+            databaseURL: "https://bookshelf-284401.firebaseio.com",
+            projectId: "bookshelf-284401",
+            storageBucket: "bookshelf-284401.appspot.com",
+            messagingSenderId: "964097279567",
+            appId: "1:964097279567:web:177f6faf5611bd80e48c3a",
+            measurementId: "G-Q2JDE37Y4G"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
     <script src="./app.js"></script>
 </body>
 
