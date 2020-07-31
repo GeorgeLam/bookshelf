@@ -16,10 +16,10 @@
 
 <body>
     <div class="row bg-light account d-flex flex-row justify-content-center">
-        <div class="">
+        <div class="acc-buttons">
             <!-- Button trigger modal -->
-            <a href="#" data-toggle="modal" data-target="#exampleModal">
-                My Account
+            <a href="#" id="my-acc" data-toggle="modal" data-target="#exampleModal">
+                Log In
             </a>
             <span id="acc-status"></span>
         </div>
@@ -106,6 +106,11 @@
                                         placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input class="form-control" id="sign-up-username" aria-describedby="username"
+                                        placeholder="Enter username">
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputPassword1">Password</label>
                                     <input type="password" class="form-control" id="sign-up-pw" placeholder="Password">
                                 </div>
@@ -135,6 +140,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="./lodash-min.js"></script>
+    <script src="env.js"></script>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
@@ -143,11 +149,12 @@
          https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
     
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
-            apiKey: "AIzaSyBgoIS28QpA9CQYcQVh2U19HUqBK1qvKHI",
+            apiKey: API,
             authDomain: "bookshelf-284401.firebaseapp.com",
             databaseURL: "https://bookshelf-284401.firebaseio.com",
             projectId: "bookshelf-284401",
@@ -159,6 +166,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
+        var db = firebase.firestore();
     </script>
 
     <script src="./app.js"></script>

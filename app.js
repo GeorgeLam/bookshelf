@@ -1,6 +1,7 @@
 let foundItems = document.querySelector(".found-items");
 let index = 0;
 let type;
+if (localStorage.getItem('books') == ""){localStorage.setItem('books', "[]")};
 let savedBooks = JSON.parse(localStorage.getItem('books')) || [];
 console.log(savedBooks);
 
@@ -149,12 +150,28 @@ async function searcher(query, startIndex, type){
 
         localStorage.setItem('books', JSON.stringify(savedBooks));
         console.log(savedBooks);
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                db.collection("users").doc(`${user.displayName}`).set({
+                    books: JSON.stringify(savedBooks)
+                })
+                    .then(function () {
+                        console.log("Document successfully written!");
+                    })
+                    .catch(function (error) {
+                        console.error("Error writing document: ", error);
+                    });
+            }
+        })
+        
     });
 
 }
 
 function handleSignUp() {
     var email = document.getElementById('sign-up-email').value;
+    var username = document.getElementById('sign-up-username').value;
     var password = document.getElementById('sign-up-pw').value;
     var confPassword = document.getElementById('sign-up-pw-conf').value;
     if (email.length < 4) {
@@ -169,11 +186,34 @@ function handleSignUp() {
         alert('Passwords do not match!');
         return;
     }
-    console.log(password)
-    console.log(confPassword)
+    if (username.length < 4) {
+        alert('Please enter a username with a length of at least four characters.');
+        return;
+    }
     // Create user with email and pass.
     // [START createwithemail]
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+    firebase.auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then((res) => {
+        return firebase.auth().currentUser.updateProfile({
+            displayName: username
+        })
+    })
+    .then(() =>{
+        const newUser = firebase.auth().currentUser; 
+        db.collection("users").doc(`${newUser.displayName}`).set({
+            username: newUser.displayName,
+            email: newUser.email,
+            books: JSON.stringify(savedBooks)
+        })
+            .then(function (docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function (error) {
+                console.error("Error adding document: ", error);
+            })
+    })
+    .catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -189,7 +229,9 @@ function handleSignUp() {
     // [END createwithemail]
 }
 
-function handleSignIn(){
+function handleSignIn(e){
+    e.preventDefault();
+    console.log("handling sign-in...")
     var email = document.getElementById('sign-in-email').value;
     var password = document.getElementById('sign-in-pw').value;
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
@@ -203,7 +245,7 @@ function handleSignIn(){
             alert(errorMessage);
         }
         console.log(error);
-        document.getElementById('quickstart-sign-in').disabled = false;
+        //document.getElementById('quickstart-sign-in').disabled = false;
         // [END_EXCLUDE]
     });
     //console.log("logged in!")
@@ -214,15 +256,71 @@ function handleSignIn(){
 //     console.log("hi")
 // });
 
+function handleLogOut(){
+    firebase.auth().signOut().then(function () {
+        console.log("Signed Out")// Sign-out successful.
+        $("#my-acc").text("Log In");
+        $("#my-acc").attr('data-target', '#exampleModal')
+
+        //localStorage.setItem(`books`, []);
+
+
+    }).catch(function (error) {
+        console.log(error)
+        // An error happened.
+    });
+}
+
 document.querySelector("#account-action-btn").addEventListener("click", handleSignUp);
 document.querySelector("#sign-in-btn").addEventListener("click", handleSignIn);
 
 authCheck = () => {
     firebase.auth().onAuthStateChanged(function (user) {
         console.log(user);
+        //  console.log(user.displayName);
+        //user.displayName = "octopus33n";
         if (user) {
+            console.log(firebase.auth().currentUser)    
+
+            var docRef = db.collection("users").doc(`${user.displayName}`);
+            docRef.get().then(function (doc) {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    let retrievedBooks = JSON.parse(doc.data().books);
+                    console.log(retrievedBooks);
+                    retrievedBooks.forEach(book => {
+                        savedBooks.push(book)
+                    })
+                    console.log(savedBooks);
+                    //localStorage.setItem(`books`, retrievedBooks);
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+
+            //console.log(retrievedBooks);
+
+            db.collection("users").doc(`${user.displayName}`).set({
+                //username: user.displayName,
+                //email: user.email,
+                books: JSON.stringify(savedBooks)
+            }, { merge: true })
+            console.log("DB change")
+
+            //localStorage.setItem(`books`, JSON.stringify(savedBooks));
+
+           
+
             // User is signed in.
-            $("#acc-status").text(`You're logged in as ${user.email}`);
+            $("#acc-status").html(`You're logged in as <strong>${user.displayName}</strong>`);
+            $('#exampleModal').modal('hide');
+            $("#my-acc").attr('data-target', '')
+            $("#my-acc").text("Log out");
+            $("#my-acc").click(handleLogOut);
+
             var displayName = user.displayName;
             var email = user.email;
             var emailVerified = user.emailVerified;
@@ -232,6 +330,8 @@ authCheck = () => {
             var providerData = user.providerData;
             // ...
         } else {
+            $("#acc-status").text(`You're not logged in`);
+
             // User is signed out.
             // ...
         }
