@@ -1,8 +1,11 @@
 let foundItems = document.querySelector(".found-items");
 let index = 0;
 let type;
-if (localStorage.getItem('books') == ""){localStorage.setItem('books', "[]")};
-let savedBooks = JSON.parse(localStorage.getItem('books')) || [];
+if (localStorage.getItem('books') == ""){
+    console.log("overwriting LS bc blank")
+    localStorage.setItem('books', "[]")
+};
+let savedBooks = JSON.parse(localStorage.getItem('books'));
 console.log(savedBooks);
 
 $(function () {
@@ -262,8 +265,8 @@ function handleLogOut(){
         $("#my-acc").text("Log In");
         $("#my-acc").attr('data-target', '#exampleModal')
 
-        //localStorage.setItem(`books`, []);
-
+        localStorage.setItem(`books`, "[]");
+        console.log("rewriting LS bc hLO func")
 
     }).catch(function (error) {
         console.log(error)
@@ -292,7 +295,10 @@ authCheck = () => {
                         savedBooks.push(book)
                     })
                     console.log(savedBooks);
-                    //localStorage.setItem(`books`, retrievedBooks);
+                    if(savedBooks){
+                        console.log("authCheckloop")
+                        localStorage.setItem(`books`, JSON.stringify(savedBooks));
+                    }
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -309,7 +315,7 @@ authCheck = () => {
                 books: JSON.stringify(savedBooks)
             }, { merge: true })
             console.log("DB change")
-
+            localStorage.setItem(`books`, "[]");
             //localStorage.setItem(`books`, JSON.stringify(savedBooks));
 
            
