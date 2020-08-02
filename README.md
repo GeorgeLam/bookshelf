@@ -1,0 +1,3 @@
+This project was created using vanilla Javascript, along with Bootstrap. It uses the Goodreads API to search for book information, and Firebase for authentication and as a database upon which a user's chosen books are saved.
+
+A user can save books without logging in, and the books are stored in local storage. Upon logging in, the books saved locally are saved on to the account and uploaded to the database. Upon logging out, the books saved locally are removed from local storage, as they have been saved to the user's account.
