@@ -184,7 +184,8 @@ async function searcher(query, startIndex, type){
 
 }
 
-function handleSignUp() {
+function handleSignUp(e) {
+    e.preventDefault();
     var email = document.getElementById('sign-up-email').value;
     var username = document.getElementById('sign-up-username').value;
     var password = document.getElementById('sign-up-pw').value;
@@ -221,12 +222,17 @@ function handleSignUp() {
             email: newUser.email,
             books: JSON.stringify(savedBooks)
         })
-            .then(function (docRef) {
-                console.log("Document written with ID: ", docRef.id);
-            })
-            .catch(function (error) {
-                console.error("Error adding document: ", error);
-            })
+    
+        
+        
+        // .then(function (docRef) {
+        //     console.log("Document written with ID: ", docRef.id);
+        // })
+        .catch(function (error) {
+            console.error("Error adding document: ", error);
+        })
+
+        window.location.href = "./index.html";
     })
     .catch(function (error) {
         // Handle Errors here.
@@ -279,6 +285,7 @@ function handleLogOut(){
 
         localStorage.setItem(`books`, "[]");
         console.log("rewriting LS bc hLO func")
+        window.location.href = "./index.html";
 
     }).catch(function (error) {
         console.log(error)
@@ -290,7 +297,7 @@ document.querySelector("#account-action-btn").addEventListener("click", handleSi
 document.querySelector("#sign-in-btn").addEventListener("click", handleSignIn);
 
 authCheck = () => {
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(async function (user) {
         console.log(user);
         //  console.log(user.displayName);
         //user.displayName = "octopus33n";
@@ -335,8 +342,8 @@ authCheck = () => {
 
             // User is signed in.
             logInStatus = 1;
-
-            $("#acc-status").html(`You're logged in as <strong>${user.displayName}</strong>`);
+            uName = await user.displayName;
+            $("#acc-status").html(`You're logged in as <strong>${uName}</strong>`);
             $('#exampleModal').modal('hide');
             $("#my-acc").attr('data-target', '')
             $("#my-acc").text("Log out");
