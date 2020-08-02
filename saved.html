@@ -15,6 +15,15 @@
 </head>
 
 <body>
+<div class="row bg-light account d-flex flex-row justify-content-center">
+    <div class="acc-buttons">
+        <!-- Button trigger modal -->
+        <a href="#" id="my-acc" data-toggle="modal" data-target="#exampleModal">
+            My Account
+        </a>
+        <span id="acc-status"></span>
+    </div>
+</div>
 
     <div class="container" id="top">
 
@@ -51,6 +60,36 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="./lodash-min.js"></script>
+
+    <script src="env.js"></script>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: API,
+            authDomain: authDom,
+            databaseURL: DBurl,
+            projectId: pID,
+            storageBucket: storageB,
+            messagingSenderId: senderID,
+            appId: appID,
+            measurementId: mesID
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        var db = firebase.firestore();
+    </script>
+
     <script src="./saved.js"></script>
 </body>
 

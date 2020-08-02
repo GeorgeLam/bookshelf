@@ -3,10 +3,12 @@ let index = 0;
 let type;
 if (localStorage.getItem('books') == ""){
     console.log("overwriting LS bc blank")
-    localStorage.setItem('books', "[]")
+    localStorage.setItem('books', JSON.stringify([]))
 };
 let savedBooks = JSON.parse(localStorage.getItem('books'));
 console.log(savedBooks);
+let logInStatus = 0;
+
 
 $(function () {
     $(document).on('shown.bs.tooltip', function (e) {
@@ -113,61 +115,71 @@ async function searcher(query, startIndex, type){
     })
 
     $(".save-book").click((e) => {
-        duplicate = 0;
-        e.preventDefault();
-        //console.log(data.items[e.target.id].volumeInfo);
-        //console.log(JSON.parse(savedBooks));
+        if (!logInStatus){
+            console.log("You're not logged in! Saving is disabled");
 
-        newBook = {
-            "title": data.items[e.target.id].volumeInfo.title,
-            "author": data.items[e.target.id].volumeInfo.authors,
-            "date": data.items[e.target.id].volumeInfo.publishedDate,
-            "image": data.items[e.target.id].volumeInfo.imageLinks.smallThumbnail,
-            "id": data.items[e.target.id].id,
-            "learnLink": `https://books.google.com/books?id=${data.items[e.target.id].id}`
-        };
+            $(function () { //Showing tooltips on 'save' click
+                    $(`#${e.target.id}`).tooltip({ "title": "Log in to save books" });
+                    $(`#${e.target.id}`).tooltip('show');
+                }
+            )
 
-        
+        } else{
+            duplicate = 0;
+            e.preventDefault();
+            //console.log(data.items[e.target.id].volumeInfo);
+            //console.log(JSON.parse(savedBooks));
 
-        savedBooks.forEach(book => {
-        if(_.isEqual(book, newBook)){
-            console.log("Duplicate found");
-            duplicate = 1;}
-        });
+            newBook = {
+                "title": data.items[e.target.id].volumeInfo.title,
+                "author": data.items[e.target.id].volumeInfo.authors,
+                "date": data.items[e.target.id].volumeInfo.publishedDate,
+                "image": data.items[e.target.id].volumeInfo.imageLinks.smallThumbnail,
+                "id": data.items[e.target.id].id,
+                "learnLink": `https://books.google.com/books?id=${data.items[e.target.id].id}`
+            };
 
-        $(function () {                             //Showing tooltips on 'save' click
-            if (duplicate){
-                console.log(duplicate);
-                $(`#${e.target.id}`).tooltip({ "title": "Already saved!" });
-                $(`#${e.target.id}`).tooltip('show');
-            } 
-        })
+            
 
-        
-        $(`#${e.target.id}`).removeClass("btn-primary");
-        $(`#${e.target.id}`).addClass("btn-success");
-        $(`#${e.target.id}`).text("Saved");
+            savedBooks.forEach(book => {
+            if(_.isEqual(book, newBook)){
+                console.log("Duplicate found");
+                duplicate = 1;}
+            });
+
+            $(function () {                             //Showing tooltips on 'save' click
+                if (duplicate){
+                    console.log(duplicate);
+                    $(`#${e.target.id}`).tooltip({ "title": "Already saved!" });
+                    $(`#${e.target.id}`).tooltip('show');
+                } 
+            })
+
+            
+            $(`#${e.target.id}`).removeClass("btn-primary");
+            $(`#${e.target.id}`).addClass("btn-success");
+            $(`#${e.target.id}`).text("Saved");
 
 
-        if (!duplicate){savedBooks.push(newBook)};
+            if (!duplicate){savedBooks.push(newBook)};
 
-        localStorage.setItem('books', JSON.stringify(savedBooks));
-        console.log(savedBooks);
+            localStorage.setItem('books', JSON.stringify(savedBooks));
+            console.log(savedBooks);
 
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                db.collection("users").doc(`${user.displayName}`).set({
-                    books: JSON.stringify(savedBooks)
-                })
-                    .then(function () {
-                        console.log("Document successfully written!");
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    db.collection("users").doc(`${user.displayName}`).set({
+                        books: JSON.stringify(savedBooks)
                     })
-                    .catch(function (error) {
-                        console.error("Error writing document: ", error);
-                    });
-            }
-        })
-        
+                        .then(function () {
+                            console.log("Document successfully written!");
+                        })
+                        .catch(function (error) {
+                            console.error("Error writing document: ", error);
+                        });
+                }
+            })
+        }
     });
 
 }
@@ -291,6 +303,7 @@ authCheck = () => {
                     console.log("Document data:", doc.data());
                     let retrievedBooks = JSON.parse(doc.data().books);
                     console.log(retrievedBooks);
+                    savedBooks = [];
                     retrievedBooks.forEach(book => {
                         savedBooks.push(book)
                     })
@@ -309,18 +322,20 @@ authCheck = () => {
 
             //console.log(retrievedBooks);
 
-            db.collection("users").doc(`${user.displayName}`).set({
-                //username: user.displayName,
-                //email: user.email,
-                books: JSON.stringify(savedBooks)
-            }, { merge: true })
+            // db.collection("users").doc(`${user.displayName}`).set({
+            //     //username: user.displayName,
+            //     //email: user.email,
+            //     books: JSON.stringify(savedBooks)
+            // }, { merge: true })
             console.log("DB change")
-            localStorage.setItem(`books`, "[]");
+            //localStorage.setItem(`books`, "[]");
             //localStorage.setItem(`books`, JSON.stringify(savedBooks));
 
            
 
             // User is signed in.
+            logInStatus = 1;
+
             $("#acc-status").html(`You're logged in as <strong>${user.displayName}</strong>`);
             $('#exampleModal').modal('hide');
             $("#my-acc").attr('data-target', '')
@@ -337,7 +352,8 @@ authCheck = () => {
             // ...
         } else {
             $("#acc-status").text(`You're not logged in`);
-
+            console.log("Not logged in")
+            logInStatus = 0;
             // User is signed out.
             // ...
         }
