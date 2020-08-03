@@ -33,11 +33,15 @@ loadList = () => {
     savedBooks.forEach(book => {
         newBook = document.createElement("DIV")
         newBook.classList.add("col", "col-12", "col-md-6", "py-2")
+        ratingText = book.rating ? `You rated this book ${book.rating}/5.` : `You haven't rated this book yet.`
+        reviewText = book.review ? book.review : `You haven't reviewed this book yet.`
         newBook.innerHTML = `<div class="card h-100">
                                 <div class="row card-body">
                                     <div class="col-8">
                                         <h5 class="card-title">${book.title}</h5>
                                         <p class="card-text">${book.author}</p>
+                                        <p class="rating">${ratingText}</p>
+                                        <p class="review"><strong>Your review:</strong><br/>${reviewText}</p>
                                         <a href="${book.learnLink}" target="_blank" class="btn btn-sm btn-primary">Learn More</a>
                                         <a href="#" class="btn btn-sm btn-primary unsave-book" id="${book.id}">Remove</a>
                                     </div>

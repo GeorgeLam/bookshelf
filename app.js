@@ -97,7 +97,7 @@ async function searcher(query, startIndex, type){
                                     <p class="card-text">${book.volumeInfo.authors}</p>
                                     <p class="card-text">${book.volumeInfo.description}</p>
                                     <a href="https://books.google.com/books?id=${book.id}" target="_blank" class="btn btn-sm btn-primary">Learn More</a>
-                                    <a href="#" class="btn btn-sm btn-primary save-book" id="${bookNumber}" data-toggle="tooltip" data-placement="right"  data-trigger="manual" data-delay='{"show":"500", "hide":"300"}'>Save</a>
+                                    <a href="#" class="btn btn-sm btn-primary save-book" id="${bookNumber}"  data-toggle="modal" data-target="#ratingModal" data-toggle="tooltip" data-placement="top"  data-trigger="manual" data-delay='{"show":"500", "hide":"300"}'>Save</a>
                                 </div>
                                 <img class="col-4" src="${book.volumeInfo.imageLinks.smallThumbnail}" alt="sans" />
                             </div>
@@ -141,7 +141,7 @@ async function searcher(query, startIndex, type){
 
             
 
-            savedBooks.forEach(book => {
+            savedBooks.forEach(book => {                //Ensuring no duplicates in localstorage
             if(_.isEqual(book, newBook)){
                 console.log("Duplicate found");
                 duplicate = 1;}
@@ -160,25 +160,47 @@ async function searcher(query, startIndex, type){
             $(`#${e.target.id}`).addClass("btn-success");
             $(`#${e.target.id}`).text("Saved");
 
-
             if (!duplicate){savedBooks.push(newBook)};
+
+            $("#saveRating").click(() => {
+                rating = ""; review = "";
+                console.log($("#bookRating").val())
+                console.log($("#bookReview").val())
+                rating = $("#bookRating").val();
+                review = $("#bookReview").val();
+                savedBooks.forEach(book => {
+                    console.log(book.id);
+                    if (book.id == data.items[e.target.id].id){
+                        console.log("Found the book!")
+                        book["rating"] = rating;
+                        book["review"] = review;
+                        console.log(savedBooks);
+                        writeToDB();
+                    }
+                })
+            })
 
             localStorage.setItem('books', JSON.stringify(savedBooks));
             console.log(savedBooks);
 
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    db.collection("users").doc(`${user.displayName}`).set({
-                        books: JSON.stringify(savedBooks)
-                    })
-                        .then(function () {
-                            console.log("Document successfully written!");
+
+            writeToDB = () => {
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (user) {
+                        db.collection("users").doc(`${user.displayName}`).set({
+                            books: JSON.stringify(savedBooks)
                         })
-                        .catch(function (error) {
-                            console.error("Error writing document: ", error);
-                        });
-                }
-            })
+                            .then(function () {
+                                console.log("Document successfully written!");
+                            })
+                            .catch(function (error) {
+                                console.error("Error writing document: ", error);
+                            });
+                    }
+                })
+            }
+
+            writeToDB();
         }
     });
 
@@ -271,6 +293,7 @@ function handleSignIn(e){
     });
     //console.log("logged in!")
     //authCheck();
+
 }
 
 // $(".nav-link").click(() => {
@@ -281,7 +304,7 @@ function handleLogOut(){
     firebase.auth().signOut().then(function () {
         console.log("Signed Out")// Sign-out successful.
         $("#my-acc").text("Log In");
-        $("#my-acc").attr('data-target', '#exampleModal')
+        $("#my-acc").attr('data-target', '#accountModal')
 
         localStorage.setItem(`books`, "[]");
         console.log("rewriting LS bc hLO func")
@@ -344,10 +367,13 @@ authCheck = () => {
             logInStatus = 1;
             uName = await user.displayName;
             $("#acc-status").html(`You're logged in as <strong>${uName}</strong>`);
-            $('#exampleModal').modal('hide');
+            $('#accountModal').modal('hide');
             $("#my-acc").attr('data-target', '')
             $("#my-acc").text("Log out");
             $("#my-acc").click(handleLogOut);
+
+            $("#saved-books").attr('data-target', '');
+            $("#saved-books").attr('data-toggle', '');
 
             var displayName = user.displayName;
             var email = user.email;
@@ -358,6 +384,10 @@ authCheck = () => {
             var providerData = user.providerData;
             // ...
         } else {
+            // data - toggle="modal" data - target="#accountModal"
+            $("#saved-books").attr('data-target', '#accountModal');
+            $("#saved-books").attr('data-toggle', 'modal');
+
             $("#acc-status").text(`You're not logged in`);
             console.log("Not logged in")
             logInStatus = 0;

@@ -18,7 +18,7 @@
     <div class="row bg-light account d-flex flex-row justify-content-center">
         <div class="acc-buttons">
             <!-- Button trigger modal -->
-            <a href="#" id="my-acc" data-toggle="modal" data-target="#exampleModal">
+            <a href="#" id="my-acc" data-toggle="modal" data-target="#accountModal">
                 My Account
             </a>
             <span id="acc-status"></span>
@@ -30,7 +30,7 @@
             <div class="display-4 my-2">Book Searcher</div>
         </div>
         <div class="row justify-content-center mb-4">
-            <a href="./saved.html">Saved Books</a>
+            <a href="./saved.html" id="saved-books">Saved Books</a>
         </div>
 
         <div class="form  form-group ">
@@ -65,7 +65,7 @@
 
 
     <!-- account sign-in/sign-up modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -85,12 +85,12 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="sign-in-form">
                             <form>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
+                                    <label for="InputEmail">Email address</label>
                                     <input type="email" class="form-control" id="sign-in-email" aria-describedby="emailHelp"
                                         placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
+                                    <label for="InputPassword">Password</label>
                                     <input type="password" class="form-control" id="sign-in-pw" placeholder="Password">
                                 </div>
                                 <button type="submit" class="btn btn-primary" id="sign-in-btn">Sign in</button>
@@ -101,7 +101,7 @@
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="sign-up-form">
                             <form>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
+                                    <label for="InputSignUpEmail">Email address</label>
                                     <input type="email" class="form-control" id="sign-up-email" aria-describedby="emailHelp"
                                         placeholder="Enter email">
                                 </div>
@@ -111,11 +111,11 @@
                                         placeholder="Enter username">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
+                                    <label for="InputSignUpPassword">Password</label>
                                     <input type="password" class="form-control" id="sign-up-pw" placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Confirm Password</label>
+                                    <label for="InputSignUpPasswordConfirmation">Confirm Password</label>
                                     <input type="password" class="form-control" id="sign-up-pw-conf" placeholder="Confirm Password">
                                 </div>
                                 <button type="submit" class="btn btn-primary" id="account-action-btn">Sign up</button>
@@ -130,6 +130,40 @@
             </div>
         </div>
     </div>
+
+
+    <!-- book rating modal -->
+
+    <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+           
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="book-review">Review</label>
+                        <textarea name="book-review" class="form-control" id="bookReview" aria-describedby="book-review" value=""></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating: </label>
+                        <select name="rating" id="bookRating">
+                            <option value=1>1/5</option>
+                            <option value=2>2/5</option>
+                            <option value=3>3/5</option>
+                            <option value=4>4/5</option>
+                            <option value=5>5/5</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveRating"  data-dismiss="modal">Save rating</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
