@@ -117,6 +117,8 @@ async function searcher(query, startIndex, type){
     $(".save-book").click((e) => {
         if (!logInStatus){
             console.log("You're not logged in! Saving is disabled");
+            e.stopPropagation();
+            e.preventDefault();
 
             $(function () { //Showing tooltips on 'save' click
                     $(`#${e.target.id}`).tooltip({ "title": "Log in to save books" });
@@ -125,6 +127,8 @@ async function searcher(query, startIndex, type){
             )
 
         } else{
+            currentlySaving = "";
+            currentlySaving = data.items[e.target.id].id;
             duplicate = 0;
             e.preventDefault();
             //console.log(data.items[e.target.id].volumeInfo);
@@ -162,7 +166,12 @@ async function searcher(query, startIndex, type){
 
             if (!duplicate){savedBooks.push(newBook)};
 
-            $("#saveRating").click(() => {
+            $("#bookRating").val("");
+            $("#bookReview").val("");
+
+            $(".saveRating").click(() => {
+              
+                console.log(currentlySaving)
                 rating = ""; review = "";
                 console.log($("#bookRating").val())
                 console.log($("#bookReview").val())
@@ -170,7 +179,7 @@ async function searcher(query, startIndex, type){
                 review = $("#bookReview").val();
                 savedBooks.forEach(book => {
                     console.log(book.id);
-                    if (book.id == data.items[e.target.id].id){
+                    if (book.id == currentlySaving){
                         console.log("Found the book!")
                         book["rating"] = rating;
                         book["review"] = review;
@@ -387,6 +396,12 @@ authCheck = () => {
             // data - toggle="modal" data - target="#accountModal"
             $("#saved-books").attr('data-target', '#accountModal');
             $("#saved-books").attr('data-toggle', 'modal');
+
+            $('#ratingModal').on('show.bs.modal', function (e) {
+                var button = e.relatedTarget;
+                    e.stopPropagation();
+                
+            });            
 
             $("#acc-status").text(`You're not logged in`);
             console.log("Not logged in")
