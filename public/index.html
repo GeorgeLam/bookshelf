@@ -175,7 +175,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="./lodash-min.js"></script>
-    <script src="env.js"></script>
+    <!-- <script src="env.js"></script> -->
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
@@ -189,14 +189,14 @@
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
-            apiKey: API,
-            authDomain: authDom,
-            databaseURL: DBurl,
-            projectId: pID,
-            storageBucket: storageB,
-            messagingSenderId: senderID,
-            appId: appID,
-            measurementId: mesID
+            apiKey: process.env.API,
+            authDomain: process.env.authDom,
+            databaseURL: process.env.DBurl,
+            projectId: process.env.pID,
+            storageBucket: process.env.storageB,
+            messagingSenderId: process.env.senderID,
+            appId: process.env.appID,
+            measurementId: process.env.mesID
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
