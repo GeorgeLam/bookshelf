@@ -31,6 +31,7 @@ loadList = () => {
 
 
     savedBooks.forEach(book => {
+        console.log(book.rating);
         newBook = document.createElement("DIV")
         newBook.classList.add("col", "col-12", "col-md-6", "py-2")
         ratingText = book.rating ? `You rated this book ${book.rating}/5.` : `You haven't rated this book yet.`
@@ -53,7 +54,7 @@ loadList = () => {
     linkActivation();
 }
 
-loadList();
+//loadList();
 
 authCheck = () => {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -78,6 +79,7 @@ authCheck = () => {
                         console.log("authCheckloop")
                         localStorage.setItem(`books`, JSON.stringify(savedBooks));
                     }
+                    loadList(); //Calling the function that loads the list on the page
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -107,15 +109,6 @@ authCheck = () => {
             $("#my-acc").attr('data-target', '')
             $("#my-acc").text("Log out");
             $("#my-acc").click(handleLogOut);
-
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-            var providerData = user.providerData;
-            // ...
         } else {
             $("#acc-status").text(`You're not logged in`);
             console.log("Not logged in")
