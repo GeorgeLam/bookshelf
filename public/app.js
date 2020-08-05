@@ -178,7 +178,7 @@ async function searcher(query, startIndex, type){
                 rating = $("#bookRating").val();
                 review = $("#bookReview").val();
                 savedBooks.forEach(book => {
-                    console.log(book.id);
+                    //console.log(book.id);
                     if (book.id == currentlySaving){
                         console.log("Found the book!")
                         book["rating"] = rating;
