@@ -50,6 +50,37 @@
 
     </div> <!-- end of container -->
 
+    <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+    
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="book-review">Review</label>
+                        <textarea name="book-review" class="form-control" id="bookReview" aria-describedby="book-review"
+                            value=""></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating: </label>
+                        <select name="rating" id="bookRating">
+                            <option value=1>1/5</option>
+                            <option value=2>2/5</option>
+                            <option value=3>3/5</option>
+                            <option value=4>4/5</option>
+                            <option value=5>5/5</option>
+                        </select>
+                    </div>
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary saveRating" data-dismiss="modal">Save rating</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

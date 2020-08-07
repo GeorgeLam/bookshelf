@@ -20,6 +20,60 @@ linkActivation = () => {
 
         loadList();
     })
+
+    let currentlyEditingBook;
+    $(".edit-book").click((e) => {
+        currentlyEditingBook = "";
+        currentlyEditingBook = e.target.id;
+        currentlyEditingBook = currentlyEditingBook.slice(4)
+        console.log(currentlyEditingBook);
+        $("#bookRating").val("");
+        $("#bookReview").val("");
+    })
+
+    $(".saveRating").click((e) => {
+        e.preventDefault();
+        console.log("saving rating");
+        editingBook = "";
+        rating = ""; review = "";
+        console.log($("#bookRating").val())
+        console.log($("#bookReview").val())
+        rating = $("#bookRating").val();
+        review = $("#bookReview").val();
+
+
+        for(let i = 0; i < savedBooks.length; i++){
+            console.log(savedBooks[i].id);
+            if (savedBooks[i].id == currentlyEditingBook){
+                console.log("Found the book: " + savedBooks[i].id);
+                savedBooks[i].review = review;
+                savedBooks[i].rating = rating;
+                console.log(savedBooks);
+            }
+        }
+
+        // editingBook = savedBooks.filter((item) => item.id == currentlyEditingBook);
+        // savedBooks = savedBooks.filter((item) => item.id !== currentlyEditingBook);
+        // console.log(savedBooks);
+        // console.log(editingBook);
+        // editingBook[0].review = $("#bookReview").val();
+        // editingBook[0].rating = $("#bookRating").val();
+        // savedBooks.push(editingBook);
+
+
+
+        localStorage.setItem('books', JSON.stringify(savedBooks));
+        
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                db.collection("users").doc(`${user.displayName}`).set({
+                    books: JSON.stringify(savedBooks)
+                })
+            }
+        })
+
+        loadList();
+    })
 }
 
 
@@ -44,6 +98,7 @@ loadList = () => {
                                         <p class="rating">${ratingText}</p>
                                         <p class="review"><strong>Your review:</strong><br/>${reviewText}</p>
                                         <a href="${book.learnLink}" target="_blank" class="btn btn-sm btn-primary">Learn More</a>
+                                        <a href="#" class="btn btn-sm btn-primary edit-book" id="edit${book.id}" data-toggle="modal" data-target="#ratingModal">Edit</a>
                                         <a href="#" class="btn btn-sm btn-primary unsave-book" id="${book.id}">Remove</a>
                                     </div>
                                     <img class="col-4" src="${book.image}" alt="Image of ${book.title}" />
