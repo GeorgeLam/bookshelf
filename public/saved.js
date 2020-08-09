@@ -23,25 +23,28 @@ linkActivation = () => {
         loadList();
     })
 
-    let currentlyEditingBook;
+    let currentlyEditingBook, reviewBox, ratingBox;
     $(".edit-book").click((e) => {
         currentlyEditingBook = "";
         currentlyEditingBook = e.target.id;
         currentlyEditingBook = currentlyEditingBook.slice(4)
-        e.preventDefault();
-        console.log(currentlyEditingBook);
-        $("#bookRating").val("");
-        $("#bookReview").val("");
-        console.log(e);
-        currentEdit = e.target.parentElement.id.slice(2);
+        currentEdit = e.target.parentElement.id.slice(2)
+
+        savedBooks.forEach(book => {
+            if (book.id == currentlyEditingBook) {
+                console.log("Found the book: " + book.id);
+                console.log(book.review);
+                reviewBox = book.review;
+                ratingBox = book.rating;
+                console.log(reviewBox, ratingBox);
+            }
+        })
+        //when editing box is opened, review/rating inputs are set to their current values
+        $("#bookRating").val(ratingBox);        
+        $("#bookReview").val(reviewBox);
     })
 
     $(".saveRating").click((e) => {
-        console.log("saving rating");
-        //editingBook = "";
-        rating = ""; review = "";
-        console.log($("#bookRating").val())
-        console.log($("#bookReview").val())
         rating = $("#bookRating").val();
         review = $("#bookReview").val();
 
@@ -51,53 +54,24 @@ linkActivation = () => {
         $(`#rating${currentEdit}`).html(ratingText);
         $(`#review${currentEdit}`).html(reviewText);
 
-        // theChosenBook = savedBooks.filter(book => {
-        //     //console.log(book)
-        //     return book["id"] == currentlyEditingBook
-        // })
-        //console.log(theChosenBook);
-        // theChosenBook[0].review = $("#bookReview").val();
-        // theChosenBook[0].rating = $("#bookRating").val();
-        // console.log(theChosenBook);
-        // console.log(savedBooks);
-
+        //Saving the review/rating input into the book for which the edit btn was clicked
         savedBooks.forEach(book => {
-            //console.log(book.id);
             if (book.id == currentlyEditingBook){
                 console.log("Found the book: " +book.id);
                 book.review = review;
                 book.rating = rating;
                 console.log(savedBooks);
-                writeToDB();
+                //Storing the updated savedBooks item on the database
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (user) {
+                        db.collection("users").doc(`${user.displayName}`).set({
+                            books: JSON.stringify(savedBooks)
+                        })
+                    }
+                })                  
             }
         })
-
-        //loadList();
-
-        // editingBook = savedBooks.filter((item) => item.id == currentlyEditingBook);
-        // savedBooks = savedBooks.filter((item) => item.id !== currentlyEditingBook);
-        // console.log(savedBooks);
-        // console.log(editingBook);
-        // editingBook[0].review = $("#bookReview").val();
-        // editingBook[0].rating = $("#bookRating").val();
-        // savedBooks.push(editingBook);
-
-
-
-        localStorage.setItem('books', JSON.stringify(savedBooks));
-        function writeToDB(){
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    db.collection("users").doc(`${user.displayName}`).set({
-                        books: JSON.stringify(savedBooks)
-                    })
-                }
-            })
-            //setTimeout(loadList(), 5000);
-            //loadList();
-        };
-        //writeToDB();
-        //loadList();
+        localStorage.setItem('books', JSON.stringify(savedBooks));  //saving to localStorage
     })
 }
 
@@ -138,13 +112,9 @@ loadList = () => {
     linkActivation();
 }
 
-//loadList();
-
 authCheck = () => {
     firebase.auth().onAuthStateChanged(function (user) {
         console.log(user);
-        //  console.log(user.displayName);
-        //user.displayName = "octopus33n";
         if (user) {
             console.log(firebase.auth().currentUser)
 
@@ -167,40 +137,24 @@ authCheck = () => {
                     //linkActivation();
 
                 } else {
-                    // doc.data() will be undefined in this case
                     console.log("No such document!");
                 }
             }).catch(function (error) {
                 console.log("Error getting document:", error);
             });
 
-            //console.log(retrievedBooks);
-
-            // db.collection("users").doc(`${user.displayName}`).set({
-            //     //username: user.displayName,
-            //     //email: user.email,
-            //     books: JSON.stringify(savedBooks)
-            // }, { merge: true })
-            console.log("DB change")
-            //localStorage.setItem(`books`, "[]");
-            //localStorage.setItem(`books`, JSON.stringify(savedBooks));
-
-
-
+            console.log("DB has been updated")
+    
             // User is signed in.
-            logInStatus = 1;
-
             $("#acc-status").html(`You're logged in as <strong>${user.displayName}</strong>`);
             $('#exampleModal').modal('hide');
             $("#my-acc").attr('data-target', '')
             $("#my-acc").text("Log out");
             $("#my-acc").click(handleLogOut);
         } else {
+            // User is not signed in.
             $("#acc-status").text(`You're not logged in`);
             console.log("Not logged in")
-            logInStatus = 0;
-            // User is signed out.
-            // ...
         }
     });
 };
